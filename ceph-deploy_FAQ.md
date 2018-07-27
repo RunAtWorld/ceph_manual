@@ -142,7 +142,7 @@
 >
 
 ### 2.2 ceph-mgr
-1. ** 配置文件 **  
+1. **配置文件**  
 	- mgr module 默认路径为 `<library dir>/mgr`  
 	- mgr data 的默认路径为 `/var/lib/ceph/mgr/ceph-{mgr_node_hostname}` 下面，主要的文件有：
 		- keyring  
@@ -158,7 +158,7 @@
 	- mgr tick period ： 每隔多少秒和监视器通信一次  
 	- mon mgr beacon grace : 持续多少秒无响应认为当前 mgr 死掉  
 
-2. ** 常用命令 **  
+2. **常用命令**  
 `ceph mgr module ls`  查看哪些模块是可用的，哪些模块是启用的，哪些模块是未启用的。  
 `ceph mgr module enable {module-name}`  启用模块    
 `ceph mgr module disable {module-name}` 禁用模块   
