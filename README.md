@@ -1,12 +1,18 @@
-ceph自动化脚本和手册
+Ceph手册与自动化脚本
 
-## Ceph 介绍
-1. [ceph 架构](./architecture.md)
+## 1. Ceph 介绍
+1. [Ceph 架构](./architecture.md)
 
-## Ceph 使用手册
-1. [ceph FAQ](./ceph-deploy_FAQ.md)
+## 2. Ceph 使用手册
+1. [Ceph 术语](./terminology.md)
+1. [Ceph 常用命令](./Ceph_cmd.md)
+1. [Ceph FAQ](./Ceph-deploy_FAQ.md)
 
-## Ceph 集群安装脚本
-1. [Ceph v10.2.11 安装脚本](./ceph_cluster-local_v10.2.11)
-2. [Ceph v13.2.0 安装脚本](./ceph_cluster-local_v13.2.0)
+## 3. Ceph 集群安装脚本
+1. [Ceph v13.2.0 安装脚本](./Ceph_cluster-local_v13.2.0)
 
+## 4. 详解 Ceph 各模块 
+1. [Ceph 文件系统](./CephFS.md)
+
+## 相关参考
+1. [Ceph Mimic Documents . http://docs.ceph.com/docs/mimic](http://docs.ceph.com/docs/mimic)
