@@ -1,20 +1,20 @@
 # 1.Ceph集群运维命令
 ## 1.1 查看监控集群状态:
 ```
-    ceph health   #查看集群健康状况
-    ceph status   #查看集群状态
-    ceph -s       #查看集群状态
-    ceph -w       #查看集群正在发生的事件
-    ceph osd stat  #查看OSD状态
-    ceph osd dump  #查看OSD详细信息
-    ceph osd tree  #树状OSD详细信息
-	ceph osd lspools  #查看已经存在的pools
-    ceph mon stat  #查看Monitors状态
-    ceph mon dump  #查看Monitors映射信息
-    ceph quorum_status  #查看集群法定人数状态
-    ceph mds stat  #查看MDS 服务器的状态
-    ceph df  #查看ceph存储空间
-    ceph auth list #查看ceph集群中的认证用户及相关的key
+    ceph health   #查看集群健康状况   
+    ceph status   #查看集群状态   
+    ceph -s       #查看集群状态   
+    ceph -w       #查看集群正在发生的事件   
+    ceph osd stat  #查看OSD状态   
+    ceph osd dump  #查看OSD详细信息   
+    ceph osd tree  #树状OSD详细信息      
+    ceph osd lspools  #查看已经存在的pools   
+    ceph mon stat  #查看Monitors状态   
+    ceph mon dump  #查看Monitors映射信息   
+    ceph quorum_status  #查看集群法定人数状态   
+    ceph mds stat  #查看MDS 服务器的状态   
+    ceph df  #查看ceph存储空间   
+    ceph auth list #查看ceph集群中的认证用户及相关的key   
  ```
 ## 1.2 pool 大概可以理解为命名空间
 1. 查看
@@ -81,11 +81,15 @@
     ```
         ceph osd down 0   #down掉osd.0节点
         ceph osd rm 0     #集群删除一个osd硬盘
+
         ceph osd crush remove osd.4     #删除标记
+
         ceph osd getmaxosd   #查看最大osd个数
         ceph osd setmaxosd 10   #设置osd的个数
+
         ceph osd out osd.3      #把一个osd节点逐出集群
         ceph osd in osd.3       #把逐出的osd加入集群
+        
         ceph osd pause          #暂停osd （暂停后整个集群不再接收数据）
         ceph osd unpause        #再次开启osd （开启后再次接收数据）
     ```
@@ -108,7 +112,7 @@
         ceph osd setcrushmap -i MAP    #设置一个CRUSH映射
     ```
 
-## 1.5 PG归置组
+## 1.6 PG归置组
 ```
     ceph pg stat          #查看pg状态
     ceph pg dump          #查看pg组的映射信息
@@ -116,35 +120,59 @@
     ceph pg  0.26 query   #查看pg详细信息
     ceph pg dump --format plain  #显示一个集群中的所有的pg统计
 ```
-## 1.6 RADOS
-```
-    rados lspools  #查看ceph集群中有多少个pool（只是查看pool)
-    rados df   #查看ceph集群中有多少个pool,并且每个pool容量及利用情况
-    rados mkpool test   #创建一个pool
-    rados create test-object -p test   #在test pool中创建一个对象object
-    rados rm test-object-1 -p test   #在test pool中删除一个对象object 
-    rados -p test ls  #查看 test pool 中的对象
-```
-## 1.7 CephFS
+## 1.7 RADOS
+1. 查看命令
+    ```
+        rados lspools  #查看ceph集群中有多少个pool（只是查看pool)
+        rados df   #查看ceph集群中有多少个pool,并且每个pool容量及利用情况
+    ```
+1. 操作命令
+
+    ```
+        rados mkpool testpool   #创建一个pool,名为 testpool
+        rados create test1 -p testpool   #在testpool中创建一个对象test1 (也可以不创建对象名，在上传时指定，将会自动创建)
+        rados put test1 ceph.log --pool=testpool  #在testpool池中创建一个对象test1，并上传对象内容
+
+        rados lspools  #查看池 
+        rados -p testpool ls  #查看testpool池的内容 
+
+        rados get test1 download.txt --pool=testpool  #获取testpool池的内容并存入download.txt
+        tail download.txt  #本地查看内容
+
+        rados rm test1 -p testpool   #在testpool中删除一个test1对象 
+        rados -p testpool ls  #查看 test pool 中的对象(对象已被删除)
+        ceph osd pool rm testpool testpool --yes-i-really-really-mean-it  #删除存储池testpool(需设置mon_allow_pool_delete为true)
+    ```
+
+## 1.8 CephFS
 ```
     ceph fs new <fs_name> <metadata> <data> #创建文件系统
     ceph fs ls  #列出文件
 ```
 
-## 1.6 RBD
+## 1.9 RBD
 1. 查看命令
     ```
         rbd ls {poolname} -l        # 列出块设备
         rbd ls pool_name   #查看ceph中一个pool里的所有镜像
-        rbd info -p pool_name --image 74cb427c-cee9-47d0-b467-af217a67e60a   #查看ceph pool中一个镜像的信息
+        rbd info -p {pool_name} --image {image_name}   #查看ceph pool中一个镜像的信息
+        rbd info {pool_name}/{image_name}
         rbd showmapped   #查看已映射块设备
     ```
+    块设备查看命令相关例子：
+    ```
+        rbd ls mytest -l        # 列出块设备
+        rbd ls mytest   #查看ceph中一个pool里的所有镜像
+        rbd info -p mytest --image test_image   #查看ceph pool中一个镜像的信息
+        rbd info mytest/test_image
+        rbd showmapped   #查看已映射块设备
+    ```        
 1. 块设备操作命令
     ```
         rbd create {image-name}  --size {megabytes}  --pool {pool-name}   #创建块设备
 
-        rbd --image {image-name} info   #检索块信息
-        rbd resize --image {image-name} --size {megabytes}  #更改块大小
+        rbd info mytest/test_image   #检索块信息
+        rbd resize --image {image-name} --size {megabytes} --allow-shrink    #更改块大小,--allow-shrink可以允许缩容
 
         rbd rm {image-name}  #删除块设备
 
@@ -156,10 +184,10 @@
 
     块设备操作命令相关例子：
     ```
-        rbd create -p test --size 10000 zhanguo   #在test池中创建一个命名为zhanguo的10000M的镜像
-        rbd --image zhanguo info   #检索zhanguo镜像块信息
-        rbd resize -p test --size 20000 zhanguo   #调整一个镜像的尺寸 
-        rbd rm -p test  zhanguo   #删除 zhanguo 镜像
+        rbd create -p mytest --size 1000 test_image   #在test池中创建一个命名为test_image的10000M的镜像
+        rbd --image test_image info --pool=mytest   #检索test_image镜像块信息
+        rbd resize -p mytest --size 500 test_image --allow-shrink   #调整一个镜像的尺寸,--allow-shrink可以允许缩容
+        rbd rm -p mytest  test_image   #删除 test_image 镜像
     ```    
 1. 块设备快照和克隆相关命令
     ```
