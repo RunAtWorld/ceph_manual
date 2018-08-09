@@ -13,4 +13,7 @@
 	[micros-k8s-6][ERROR ] RuntimeError: command returned non-zero exit status: 1
 	[ceph_deploy][ERROR ] RuntimeError: Failed to execute command: /usr/sbin/ceph-volume lvm zap /dev/xvdb
 	```
-	执行 `fuser -m -v /dev/xvdb` 查看占用此硬盘的pid
+	(1) 执行 `fuser -m -v /dev/xvdb` 查看占用此硬盘的pid, `kill -9 {pid}` 删除掉占用此硬盘的进程  
+	(2) 执行 `pvdisplay -m` 查看 Ceph 使用的逻辑卷名   
+	(3) 执行 `lvremove {logic_volume_name}`  删除对应的逻辑卷。
+	> 更多关于 Linux 磁盘的理解：[https://blog.csdn.net/RunAtWorld/article/details/81536055](https://blog.csdn.net/RunAtWorld/article/details/81536055)
