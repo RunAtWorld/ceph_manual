@@ -17,3 +17,5 @@
 	(2) 执行 `pvdisplay -m` 查看 Ceph 使用的逻辑卷名   
 	(3) 执行 `lvremove {logic_volume_name}`  删除对应的逻辑卷。
 	> 更多关于 Linux 磁盘的理解：[https://blog.csdn.net/RunAtWorld/article/details/81536055](https://blog.csdn.net/RunAtWorld/article/details/81536055)
+1. **CephFS只能启动一个，为什么？**   
+答： 该功能为试验功能，和其他功能兼容性问题未验证 。 http://docs.ceph.com/docs/mimic/cephfs/experimental-features/#multiple-filesystems-within-a-ceph-cluster
