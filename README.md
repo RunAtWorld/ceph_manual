@@ -20,5 +20,8 @@
 ## 4. 详解 Ceph 各模块 
 1. [Ceph 文件系统](./cephFS/cephFS.md)
 
+## 5. 性能调优
+1. [Ceph 集群性能调优](./optimization.md)
+
 ## 相关参考
 1. [Ceph Mimic Documents . http://docs.ceph.com/docs/mimic](http://docs.ceph.com/docs/mimic)
