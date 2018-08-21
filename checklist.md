@@ -1,8 +1,9 @@
 1. 多租户完全隔离  
+```
 sudo mount -t ceph micros-k8s-6:6789:/u1 /mnt/ceph_kernel  -o name=u1,secretfile=/etc/ceph/admin.secret
 sudo mount -t ceph micros-k8s-6:6789:/u2 /mnt/ceph_kernel  -o name=u2,secretfile=/etc/ceph/admin.secret
 sudo mount -t ceph micros-k8s-6:6789:/ /mnt/ceph_kernel  -o name=admin,secretfile=/etc/ceph/admin.secret
-
+```
 1. 用户读写过程，client config  
 
 1. client cache 怎样使用  
@@ -24,7 +25,9 @@ ceph osd pool set cephfs_metadata target_max_bytes 20000000000
 ``` 
 1. 1.2 pool 大概可以理解为命名空间  
 
+1. -mount , -r 
 
+1. 
 # 其他
 1. Ceph monitor map包括OSD Map、PG Map、MDS Map和CRUSH等，这些Map被统称为集群Map。
 ```

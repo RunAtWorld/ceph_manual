@@ -19,6 +19,7 @@
 
 ## 4. 详解 Ceph 各模块 
 1. [Ceph 文件系统](./cephFS/cephFS.md)
+2. [关于PG](./pg_expe-1.md)
 
 ## 5. 性能调优
 1. [Ceph 集群性能调优](./optimization.md)

@@ -248,3 +248,37 @@ scp /var/backups/* someNode:/backup/
 	                    64 undersized+degraded+peered
 	```
 	好消息是，ceph -s 有了正确的输出，坏消息就是 HEALTH_ERR 了。不过不用担心，这时候将 ceph-4 的 ceph.conf 推送到其他所有节点上，再重启 OSD 集群就可以恢复正常了。
+
+1. **如何调整pg数量？**    
+答：   
+(1)计算合适的pg数   
+关于pg数值的合理值的计算参考 http://ceph.com/pgcalc/ 。但是在真正还是调整pg前，要确保集群状态是健康的。   
+(2)调整前确保状态ok    
+如果 ceph -s 命令显示的集群状态是OK的，此时就可以动态的增大pg的值。    
+注意： 增大pg有几个步骤，同时必须比较平滑的增大，不能一次性调的太猛。对于生产环境格外注意。
+**一次性的将pg调到一个很大的值会导致集群大规模的数据平衡，因而可能导致集群出现问题而临时不可用。**    
+(3)调整数据同步参数，减少数据同步时对业务的影响    
+当调整 PG/PGP 的值时，会引发ceph集群的 backfill 操作，数据会以最快的数据进行平衡，因此可能导致集群不稳定。 因此首先设置 backfill ratio 到一个比较小的值，通过下面的命令设置：
+```
+ceph tell osd.* injectargs '--osd-max-backfills 1'
+ceph tell osd.* injectargs '--osd-recovery-max-active 1'
+```
+还包括下面这些：
+```
+osd_backfill_scan_min = 4 
+osd_backfill_scan_max = 32 
+osd recovery threads = 1 
+osd recovery op priority = 1 
+```
+(4)调整pg
+先增长pg的值，我们推荐的增长幅度是按照 2的幂进行增长，如原来是 64个，第一次调整先增加到128个， 设置命令如下：
+```
+ceph osd pool set <poolname> pg_num <new_pgnum>
+```
+通过 ceph -w 查看集群的变化。
+5.等到状态再次恢复正常再调整pgp
+在pg增长之后，通过下面的命令增加pgp，pgp的值需要与pg的值一致：
+```
+ceph osd pool set <poolname> pgp_num <new_pgnum>
+```
+此时，通过 ceph -w 可以看到集群状态的详细信息，可以看到数据的再平衡过程。
