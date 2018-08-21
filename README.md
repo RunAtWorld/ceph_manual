@@ -15,7 +15,7 @@
 1. [Ceph 集群部署FAQ](./ceph-deploy_FAQ.md)
 
 ## 3. Ceph 集群安装脚本
-1. [Ceph v13.2.0 安装脚本](./ceph_cluster-local_v13.2.0)
+1. [Ceph v13.2.1 自动化安装脚本](./ceph_cluster_13.2.1)
 
 ## 4. 详解 Ceph 各模块 
 1. [Ceph 文件系统](./cephFS/cephFS.md)
