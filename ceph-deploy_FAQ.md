@@ -34,6 +34,37 @@
 		> PG指定存储池存储对象的目录有多少个，PGP是存储池PG的OSD分布组合个数。PG的增加会引起PG内数据的分裂，分裂到相同的OSD上。新生成的PG当中PGP的增加会引起部分PG的分布变化，但是不会引起PG内对象的变动。PG和PGP数量一定要根据OSD的数量进行调整，调整PGP不会引起PG内的对象的分裂，但是会引起PG的分布的变动。
 		> 在更改pool的PG数量时，需同时更改PGP的数量。PGP是为了管理placement而存在的专门的PG，它和PG的数量应该保持一致。如果你增加pool的pg_num，就需要同时增加pgp_num，保持它们大小一致，这样集群才能正常rebalancing。[如何修改pg_num和pgp_num：(https://www.cnblogs.com/kuku0223/p/8214412.html](https://www.cnblogs.com/kuku0223/p/8214412.html)
 
+1. **ceph-osd 服务挂了之后如何启动？**    
+	答： 
+	(1) 查看 down 的 osd 所在的主机 , 这里是 `micros-k8s-6` 
+	```
+	[root@micros-k8s-6 ~]# ceph osd status
+	+----+--------------+-------+-------+--------+---------+--------+---------+-----------+
+	| id |     host     |  used | avail | wr ops | wr data | rd ops | rd data |   state   |
+	+----+--------------+-------+-------+--------+---------+--------+---------+-----------+
+	| 0  | micros-k8s-6 | 1027M | 18.9G |    0   |     0   |    0   |     0   |   exists  |
+	| 1  | micros-k8s-3 | 1026M | 9209M |    0   |     0   |    0   |     0   | exists,up |
+	| 2  | micros-k8s-5 | 1027M | 6137M |    0   |     0   |    0   |     0   | exists,up |
+	| 3  | micros-k8s-5 | 1027M | 6137M |    0   |     0   |    0   |     0   | exists,up |
+	+----+--------------+-------+-------+--------+---------+--------+---------+-----------+
+	```
+	(2) 在 osd 所在的主机上启动 osd 服务 ,这里在 `micros-k8s-6` 执行
+	```
+	[root@micros-k8s-6 ~]# systemctl start ceph-osd@0
+	```
+	(3) 检查 osd 启动情况 , micros-k8s-6 的 osd.0 已正常启动
+	```
+	[root@micros-k8s-6 ~]# ceph osd status
+	+----+--------------+-------+-------+--------+---------+--------+---------+-----------+
+	| id |     host     |  used | avail | wr ops | wr data | rd ops | rd data |   state   |
+	+----+--------------+-------+-------+--------+---------+--------+---------+-----------+
+	| 0  | micros-k8s-6 | 1027M | 18.9G |    0   |     0   |    0   |     0   | exists,up |
+	| 1  | micros-k8s-3 | 1027M | 9208M |    0   |     0   |    0   |     0   | exists,up |
+	| 2  | micros-k8s-5 | 1027M | 6136M |    0   |     0   |    0   |     0   | exists,up |
+	| 3  | micros-k8s-5 | 1027M | 6136M |    0   |     0   |    0   |     0   | exists,up |
+	+----+--------------+-------+-------+--------+---------+--------+---------+-----------+
+	```
+
 1. **运行启动服务的时候显示警告 "warning: unable to create /var/run/ceph: (13) Permission denied"**
 	安装过程顺利，运行启动服务的时候显示警告
 	```
