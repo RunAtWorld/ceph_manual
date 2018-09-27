@@ -9,3 +9,5 @@ ceph config set mgr mgr/dashboard/server_port 8092
 ceph mgr module disable dashboard
 ceph mgr module enable dashboard
 ceph dashboard set-login-credentials ceph admin
+
+exit 0

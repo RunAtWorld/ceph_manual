@@ -1,5 +1,4 @@
 sudo cat << EOM >> /etc/yum.repos.d/CentOS-Base.repo
-
 [base]
 name=CentOS-7.5.1804 - Base - 163.com
 #mirrorlist=http://mirrorlist.centos.org/?release=7.5.1804&arch=$basearch&repo=os
