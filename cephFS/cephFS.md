@@ -159,6 +159,7 @@
 	```
 	ceph fs set <fs name> max_file_size <size in bytes>   #设置CephFS单个文件占用的最大文件，默认为1TB，设置为0表示无限制
 	```
+
 	**使 Ceph 文件系统下线**
 	```
 	ceph fs set <fs_name> down true
@@ -217,7 +218,6 @@
 1. ## 目录碎片
 1. ## 配置多个活 mds
 1. ## 为开发者
-
 
 # 二. CephFS应用场景
 1. ## 提供可靠、稳定、方便的网络数据存储

@@ -175,6 +175,7 @@
         rbd create {image-name}  --size {megabytes}  --pool {pool-name}   #创建块设备
 
         rbd info mytest/test_image   #检索块信息
+
         rbd resize --image {image-name} --size {megabytes} --allow-shrink    #更改块大小,--allow-shrink可以允许缩容，如果不加 --allow-shrink 只能增加容量
 
         rbd rm {image-name}  #删除块设备
@@ -188,6 +189,7 @@
     块设备操作命令相关例子：
     ```
         rbd create -p mytest --size 1000 test_image   #在test池中创建一个命名为test_image的1000M的镜像,默认单位是 M,可以用 M/G/T
+
         rbd --image test_image info --pool=mytest   #检索test_image镜像块信息
         rbd resize -p mytest --size 500 test_image --allow-shrink   #调整一个镜像的尺寸,--allow-shrink可以允许缩容
         rbd rm -p mytest  test_image   #删除 test_image 镜像
@@ -255,3 +257,4 @@
     sudo mount /dev/rbd0 /mnt/ceph-block-device  
     cd /mnt/ceph-block-device
     ```
+
