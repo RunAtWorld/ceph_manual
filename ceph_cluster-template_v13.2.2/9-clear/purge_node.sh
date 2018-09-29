@@ -1,5 +1,5 @@
 #!/bin/bash
-host_array=('ceph-rc-1' 'ceph-rc-2' 'ceph-rc-3')
+host_array=$@
 ceph-deploy purge ${host_array[*]} #清理文件
 ceph-deploy purgedata ${host_array[*]} #清理数据
 ceph-deploy forgetkeys  #删除keys
