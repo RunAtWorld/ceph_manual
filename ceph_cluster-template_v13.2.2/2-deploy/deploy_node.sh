@@ -9,15 +9,15 @@ yum install -y https://download.ceph.com/rpm-mimic/el7/noarch/ceph-release-1-0.e
 yum -y install ceph-deploy-2.0.1-0
 ceph-deploy --version
 
-for h in $hosts; do
-     {
-        echo "============================================"
-        echo "====exec: install ceph: version=mimic @$h==="
-        echo "============================================"
-        # ceph-deploy install --release mimic $h 
-        ssh $h yum install -y ceph ceph-radosgw
-     }&   
-     wait 
-done 
+# for h in $hosts; do
+#      {
+#         echo "============================================"
+#         echo "====exec: install ceph: version=mimic @$h==="
+#         echo "============================================"
+#         # ceph-deploy install --release mimic $h 
+#         ssh $h yum install -y ceph ceph-radosgw
+#      }&   
+#      wait 
+# done 
    
 exit 0

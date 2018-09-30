@@ -47,5 +47,6 @@ rm -rf /etc/yum.repos.d/ceph*
 #如果使用官方源，注释掉上面的，使用下面命令
 cd `dirname $0` && cp ../repos/ceph.repo /etc/yum.repos.d/
 yum clean all && yum makecache
+yum install -y ceph ceph-radosgw
 
 exit 0
