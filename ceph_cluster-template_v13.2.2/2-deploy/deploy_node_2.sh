@@ -1,14 +1,14 @@
 #!/bin/bash
 hosts=$@
 #创建集群信息
-pub_net=$(cat /etc/hosts |grep ${hosts[0]} |cut -d ' ' -f 1)
+pub_net=$(cat /etc/hosts |grep $1 |cut -d ' ' -f 1)
 ceph-deploy new ${hosts[*]}
 echo "osd pool default size = 2">>ceph.conf
 echo "public network = $pub_net/16" >> ceph.conf
 cat ceph.conf
 
 #初始化集群信息
-ceph-deploy mon create-initial
+ceph-deploy --overwrite-conf mon create-initial
 # ceph-deploy --overwrite-conf mon create-initial
 ceph-deploy gatherkeys ${hosts[*]}
 for h in $hosts; do
