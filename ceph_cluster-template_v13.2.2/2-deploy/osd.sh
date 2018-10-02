@@ -1,6 +1,5 @@
-﻿#!/bin/bash
-#部署osd服务
-hosts=$@
+#!/bin/bash
+hosts=$@ #部署osd服务
 counter=0
 for host_elem in $hosts; do
 	counter=0
@@ -14,7 +13,8 @@ for host_elem in $hosts; do
 		echo $blk
 		{
 			ceph-deploy disk zap $host_elem /dev/$blk #清空Disk,注意只能是未使用的Disk  如果报错应使用 wipefs --all /dev/xvdb
-			ceph-deploy osd create --data /dev/$blk $host_elem			
+			# ceph-deploy osd create --data /dev/$blk $host_elem
+			ceph-deploy --overwrite-conf osd create --data /dev/$blk $host_elem			
 		}&
 	done
 	wait
