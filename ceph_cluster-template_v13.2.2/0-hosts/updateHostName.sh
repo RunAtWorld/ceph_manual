@@ -1,12 +1,12 @@
 sudo cat > /etc/hostname<<EOM
-ceph-rc-1
+ceph-test-1
 EOM
 
 sudo cat > /etc/hostname<<EOM
-ceph-rc-2
+ceph-test-2
 EOM
 
 sudo cat > /etc/hostname<<EOM
-ceph-rc-3
+ceph-test-3
 EOM
 

@@ -1,6 +1,10 @@
 #!/bin/bash
-lsb_release -a
-uname -r
+# 安装ceph的依赖
+yum install -y yum-utils && \
+yum-config-manager --add-repo https://dl.fedoraproject.org/pub/epel/7/x86_64/ && \
+yum install --nogpgcheck -y epel-release && \
+rpm --import /etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-7 && \
+rm -f /etc/yum.repos.d/dl.fedoraproject.org*
 sudo rm -rf /etc/yum.repos.d/ceph*
 # 安装repo源
 # sudo yum install -y https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm

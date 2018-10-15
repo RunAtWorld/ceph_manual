@@ -34,18 +34,27 @@ yum install -y deltarpm
 yum install -y sshpass
 
 rm -rf /etc/yum.repos.d/ceph*
-#设置ceph的局域网内的yum源
-# cat << EOM > /etc/yum.repos.d/ceph.repo  
-# [Ceph-13.2.1]
-# name=Ceph-13.2.1
-# baseurl=http://ec2-52-82-8-82.cn-northwest-1.compute.amazonaws.com.cn/ceph/rpm-mimic/el7/x86_64/
-# # baseurl=file:///nfs_mirrors/ceph/rpm-mimic/el7/x86_64
-# gpgcheck=0
-# enabled=1
-# priority=1
-# EOM
-#如果使用官方源，注释掉上面的，使用下面命令
-cd `dirname $0` && cp ../repos/ceph.repo /etc/yum.repos.d/
+# 安装ceph需要的系统动态链接库
+yum install -y yum-utils && \
+yum-config-manager --add-repo https://dl.fedoraproject.org/pub/epel/7/x86_64/ && \
+yum install --nogpgcheck -y epel-release && \
+rpm --import /etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-7 && \
+rm -f /etc/yum.repos.d/dl.fedoraproject.org*
+yum update  -y
+
+#设置ceph的局域网的yum源
+cat << EOM > /etc/yum.repos.d/ceph.repo  
+[Ceph-13.2.1]
+name=Ceph-13.2.1
+baseurl=http://ec2-52-82-8-82.cn-northwest-1.compute.amazonaws.com.cn:81/ceph/rpm-mimic/
+# baseurl=file:///nfs_mirrors/ceph/rpm-mimic/el7/x86_64
+gpgcheck=0
+enabled=1
+priority=1
+EOM
+#使用官方源，注释掉上面的，使用下面命令
+# cd `dirname $0` && cp ../repos/ceph.repo /etc/yum.repos.d/
+
 yum clean all && yum makecache
 yum install -y ceph ceph-radosgw
 

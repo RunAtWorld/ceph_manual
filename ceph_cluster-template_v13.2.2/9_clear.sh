@@ -1,3 +1,2 @@
 #!/bin/bash
-host_array=('ceph-rc-1' 'ceph-rc-2' 'ceph-rc-3')
-sh ./9-clear/purge_node.sh ${host_array[@]}
+sh ./9-clear/purge_node.sh 'ceph-test-1' 'ceph-test-2' 'ceph-test-3'
