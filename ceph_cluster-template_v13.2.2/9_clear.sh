@@ -1,2 +1,4 @@
 #!/bin/bash
-sh ./9-clear/purge_node.sh 'ceph-test-1' 'ceph-test-2' 'ceph-test-3'
+sh ./9-clear/purge_node.sh
+ceph-deploy forgetkeys  #删除keys
+yum remove -y ceph-deploy

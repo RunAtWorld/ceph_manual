@@ -12,12 +12,14 @@ sh 0_updateHosts.sh
 sh 1_check_node.sh
 ```
 
+修改 `name_pwd` 文件，填入主机别名和主机的root密码(为了安全考虑，集群建好后可以将这个文件备份在其他地方，然后将该文件删除)，如下
+```
+ceph-test-1 micros_ceph
+ceph-test-2 micros_ceph
+ceph-test-3 micros_ceph
+```
 ## 2. 部署 Ceph 集群
-1. 修改 `2_install_cluster.sh` 中第2行的host数组为 ceph 集群中的主机名别名，如本模板脚本中使用的3台主机分别为`'ceph-test-1' 'ceph-test-2' 'ceph-test-3'`,则修改为
-```
-host_array=('ceph-test-1' 'ceph-test-2' 'ceph-test-3')
-```
-2. 部署Ceph集群，在 Admin节点上执行以下代码
+部署Ceph集群，在 Admin节点上执行以下代码
 ```
 sh 2_install_cluster.sh
 ```
@@ -25,11 +27,7 @@ sh 2_install_cluster.sh
 **注：这个过程需要输入各个节点的root密码用于 Admin节点和其他节点之间的 ssh 免密钥登录**
 
 ## 3. 部署 CephFS
-1. 修改 `3_deploy_cephfs.sh` 中第2行的host数组为 ceph 集群中的主机名别名，如本模板脚本中使用的3台主机分别为`'ceph-test-1' 'ceph-test-2' 'ceph-test-3'`,则修改为
-```
-host_array=('ceph-test-1' 'ceph-test-2' 'ceph-test-3')
-```
-2. 在 Admin 节点上执行以下代码，部署 CephFS
+在 Admin 节点上执行以下代码，部署 CephFS
 ```
 sh 3_deploy_cephfs.sh
 ```
@@ -72,12 +70,7 @@ sh ./3-client_use/install_client.sh
 ## 5. 清理集群
 如果你已经不再需要ceph集群或者，安装过程中出现问题，需要清理安装环境，重装时，可以使用以下脚本。     
 以下脚本会清理掉所有节点上的 ceph安装文件、数据、集群配置、释放占用的块设备等。
-
-修改 `9_clear.sh` 中的执行参数为 ceph 集群中的主机名别名，如本模板脚本中使用的3台主机分别为`'ceph-test-1' 'ceph-test-2' 'ceph-test-3'`,则修改为
-```
-sh ./9-clear/purge_node.sh 'ceph-test-1' 'ceph-test-2' 'ceph-test-3'
-```
-执行以下代码
+在Admin节点上执行以下代码
 ```
 sh 9_clear.sh
 ```

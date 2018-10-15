@@ -1,5 +1,6 @@
 #!/bin/bash
 hosts=$@
+
 #创建集群信息
 pub_net=$(cat /etc/hosts |grep $1 |cut -d ' ' -f 1)
 ceph-deploy new ${hosts[*]}
