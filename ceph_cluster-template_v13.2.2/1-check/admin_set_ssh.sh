@@ -3,9 +3,8 @@ ssh-keygen -t rsa -N '' -f ~/.ssh/id_rsa
 cat ~/.ssh/id_rsa.pub >> ~/.ssh/authorized_keys && chmod 644 ~/.ssh/authorized_keys
 #在admin节点上设置ssh登录信息
 rm -rf ~/.ssh/config
-
-set -x
-set -v
+touch ~/.ssh/config
+chmod 600 ~/.ssh/config
 while read line
 do
     host=`echo $line | awk '{print $1}'`
@@ -15,8 +14,6 @@ do
     echo "sshpass -p $key ssh-copy-id -i ~/.ssh/id_rsa.pub root@$host" #向其他主机传输密钥
     sshpass -p $key ssh-copy-id -i ~/.ssh/id_rsa.pub root@$host #向其他主机传输密钥
 done < name_pwd
-set +x
-set +v
 
 chmod 644 ~/.ssh/config
 
