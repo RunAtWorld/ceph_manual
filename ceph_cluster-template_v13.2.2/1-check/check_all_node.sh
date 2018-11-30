@@ -16,6 +16,7 @@ yum install -y ntp ntpdate ntp-doc  #安装时间同步服务
 ntpdate -u cn.pool.ntp.org     #设置系统时间与网络时间同步
 hwclock --systohc    #系统时间写入硬件时间
 hwclock -w     #强制系统时间写入CMOS中防止重启失效
+timedatectl set-timezone Asia/Shanghai #设置时区为中国
 
 #安装sshd
 yum install -y openssh-server
